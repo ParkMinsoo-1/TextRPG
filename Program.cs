@@ -41,11 +41,11 @@ namespace TextRPG
                 
             }
             Player player = new Player();
-            player.job = job;
-            player.playerName = playerName;
+            player.Job = job;
+            player.PlayerName = playerName;
 
             Console.WriteLine(" ");
-            Console.WriteLine($"환영합니다. 전설의 {player.job} {player.playerName}님.");
+            Console.WriteLine($"환영합니다. 전설의 {player.Job} {player.PlayerName}님.");
             Console.WriteLine("이곳에서 던전으로 들어가기 전 활동을 할 수 있습니다. \n \n1. 상태 보기 \n2. 인벤토리 \n3. 상점 \n");
             SelectMenu(player);
         }
@@ -84,23 +84,23 @@ namespace TextRPG
 
         class Player()
         {
-            public int level = 1;
-            public string playerName ;
-            public string job;
-            public int attackpower;
-            public int defense;
-            public int health = 50;
-            public int gold = 1500;
+            public int Level = 1;
+            public string PlayerName ;
+            public string Job;
+            public int Attackpower;
+            public int Defense;
+            public int Health = 50;
+            public int Gold = 1500;
 
             public void PlayerStatus()
             {
-                Console.WriteLine("Lv. " + level);
-                Console.WriteLine("이름 : " + playerName);
-                Console.WriteLine("직업 : " + job);
-                Console.WriteLine("공격력 : " + attackpower);
-                Console.WriteLine("방어력 : " + defense);
-                Console.WriteLine("체 력 : " + health);
-                Console.WriteLine("Gold : " + gold + "G");
+                Console.WriteLine("Lv. " + Level);
+                Console.WriteLine("이름 : " + PlayerName);
+                Console.WriteLine("직업 : " + Job);
+                Console.WriteLine("공격력 : " + Attackpower);
+                Console.WriteLine("방어력 : " + Defense);
+                Console.WriteLine("체 력 : " + Health);
+                Console.WriteLine("Gold : " + Gold + "G");
             }
          }
         
@@ -112,7 +112,7 @@ namespace TextRPG
 
         static void Store()
         {
-
+            Console.WriteLine("상점보기 입니다.");
         }
     }
 }
