@@ -54,9 +54,7 @@ namespace TextRPG
                     Console.WriteLine("다시 입력해 주세요.");
                 }
             }
-            Player player = new Player();
-            player.Job = job;
-            player.PlayerName = playerName;
+            Player player = new Player(playerName, job);
             
             Console.WriteLine(" ");
             Console.WriteLine($"환영합니다. 전설의 {player.Job} {player.PlayerName}님.");
@@ -113,6 +111,7 @@ namespace TextRPG
                 else if (num == 2)
                 {
                     player.Inventory.ShowInventory();
+
                     while (true)
                     {
                         Console.WriteLine(" ");
@@ -128,7 +127,7 @@ namespace TextRPG
                         }
                         if (inventoryNum == 1)
                         {
-                            player.Inventory.ShowInventory();
+                            player.Inventory.EquipItem();
                             break;
                         }
                         else if(inventoryNum == 2)
@@ -160,6 +159,14 @@ namespace TextRPG
 
         class Player
         {
+
+            public Player(string name, string job)
+            {
+                PlayerName = name;
+                Job = job;
+                Inventory = new PlayerInventory();
+            }
+            
             public PlayerInventory Inventory { get; set; }
 
             public int Level = 1;
@@ -187,7 +194,10 @@ namespace TextRPG
                 Inventory.AddItem(item);
             }
 
-            public void 
+            public void EquipItem()
+            {
+
+            }
          }
 
         class PlayerInventory
@@ -218,6 +228,16 @@ namespace TextRPG
                 for (int i = 0; i < items.Count; i++)
                 {
                     Console.WriteLine($"{i + 1}. {items[i].ShowItemInfo()}");
+                }
+            }
+
+            public void EquipItem()
+            {
+                ShowInventory();
+
+                if(items.Count == 0)
+                {
+                    return;
                 }
             }
 
