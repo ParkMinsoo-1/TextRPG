@@ -8,22 +8,21 @@ namespace TextRPG
         
         static void Main(string[] args)
         {
-            string job = null;
-            int num = 0;
 
 
             Console.WriteLine("스파르타 던전에 오신 여러분 환영합니다.");
             Console.WriteLine("플레이할 캐릭터의 이름을 적어 주세요.\n");
             
             string playerName = Console.ReadLine();
+            string job = null;
             
-
             while (true)
             {
+                
                 Console.WriteLine("");
                 Console.WriteLine("당신의 직업은 무엇입니까?");
                 Console.WriteLine("1. 전사 \n2. 도적 \n3. 궁수 \n4. 마법사");
-                bool isNum = int.TryParse(Console.ReadLine(), out num);
+                bool isNum = int.TryParse(Console.ReadLine(), out int num);
 
                 if (!isNum)
                 {
@@ -58,13 +57,14 @@ namespace TextRPG
             Player player = new Player(playerName, job);
             
             Console.WriteLine(" ");
-            Console.WriteLine($"환영합니다. 전설의 {player.Job} {player.PlayerName}님.");
+            Console.WriteLine($"환영합니다. 전설의 {job} {playerName}님.");
 
             SelectMenu(player);
         }
 
         static void SelectMenu(Player player)
         {
+            
             while (true)
             {
                 Console.WriteLine("이곳에서 던전으로 들어가기 전 활동을 할 수 있습니다. \n \n1. 상태 보기 \n2. 인벤토리 \n3. 상점 \n");
@@ -107,7 +107,6 @@ namespace TextRPG
                             Console.WriteLine("잘못된 입력입니다. 다시 선택해 주세요.");
                         }
                      }
-                    break;
                 }
                 else if (num == 2)
                 {
@@ -140,8 +139,6 @@ namespace TextRPG
                             Console.WriteLine("잘못된 입력입니다. 다시 선택해 주세요.");
                         }
                     }
-                    SelectMenu(player);
-
                 }
                 else if (num == 3)
                 {
@@ -192,14 +189,12 @@ namespace TextRPG
                 Console.WriteLine($"{"방어력",-4}: {totalDefense} + {Inventory.TotalDefense}");
                 Console.WriteLine($"{"체력",-5}: {totalHealth} + {Inventory.TotalHealth}");
                 Console.WriteLine($"{"Gold",-7}: {Gold,3}G");
-
             }
 
             public void ObtainItem(Item item)
             {
                 Inventory.AddItem(item);
             }
-
          }
 
         class PlayerInventory
@@ -232,7 +227,7 @@ namespace TextRPG
                 for (int i = 0; i < items.Count; i++)
                 {
                     string equippedMark = equippedItems.Contains(items[i]) ? "[E]" : "[-]";
-                    Console.WriteLine($"{i + 1}.{equippedMark}{items[i].ShowItemInfo()}");
+                    Console.WriteLine($"{equippedMark}{items[i].ShowItemInfo()}");
                 }
             }
             public int TotalAttackPower => equippedItems.Sum(item => item.ItemAttackpower);
@@ -243,6 +238,7 @@ namespace TextRPG
             {
                 while (true)
                 {
+                    //장착 관리를 열었을 때 아이템 앞에 숫자가 나오게 하는 방법을 생각해보자
                     ShowInventory();
                     Console.WriteLine(" ");
                     Console.WriteLine("장착/해제할 아이템 번호를 입력하세요");
