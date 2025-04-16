@@ -243,7 +243,6 @@ namespace TextRPG
             {
                 while (true)
                 {
-                    
                     ShowInventory();
                     Console.WriteLine(" ");
                     Console.WriteLine("장착/해제할 아이템 번호를 입력하세요");
@@ -278,18 +277,10 @@ namespace TextRPG
                     }
 
                 }
-                
-
-                
-
-
             }
-
         }
-
         class Item
         {
-            
             public string ItemName { get; set; }
             public int ItemDefense{ get; set; }
             public int ItemHealth { get; set; }
@@ -311,8 +302,6 @@ namespace TextRPG
                 string FixedItemName = ItemName.PadRight(lenght);
 
                 return string.Format($"이름 : {FixedItemName}|방어력 : {ItemDefense,3}|체력 : {ItemHealth,3}|공격력 : {ItemAttackpower,3}|설명 : {ItemDescription,-3}");
-
-                
             }
         }
 
