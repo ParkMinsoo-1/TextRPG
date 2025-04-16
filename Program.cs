@@ -7,9 +7,10 @@ namespace TextRPG
         
         static void Main(string[] args)
         {
-            string job = "";
+            string job = null;
             int num = 0;
-            
+
+
             Console.WriteLine("스파르타 던전에 오신 여러분 환영합니다.");
             Console.WriteLine("플레이할 캐릭터의 이름을 적어 주세요.\n");
             
@@ -111,7 +112,35 @@ namespace TextRPG
                 }
                 else if (num == 2)
                 {
-                    ShowInventory();
+                    player.Inventory.ShowInventory();
+                    while (true)
+                    {
+                        Console.WriteLine(" ");
+                        Console.WriteLine("1. 장착 관리 \n2. 나가기");
+                        Console.Write("원하시는 행동을 입력해 주세요. \n>>");
+
+                        bool Inventory = int.TryParse(Console.ReadLine(), out int inventoryNum);
+
+                        if (!Inventory)
+                        {
+                            Console.WriteLine("숫자를 입력해 주세요.");
+                            continue;
+                        }
+                        if (inventoryNum == 1)
+                        {
+                            player.Inventory.ShowInventory();
+                            break;
+                        }
+                        else if(inventoryNum == 2)
+                        {
+                            SelectMenu(player);
+                            break;
+                        }
+                        else
+                        {
+                            Console.WriteLine("잘못된 입력입니다. 다시 선택해 주세요.");
+                        }
+                    }
                     break;
                 }
                 else if (num == 3)
@@ -129,15 +158,18 @@ namespace TextRPG
             
         }
 
-        class Player()
+        class Player
         {
+            public PlayerInventory Inventory { get; set; }
+
             public int Level = 1;
-            public string PlayerName;
+            public string PlayerName ;
             public string Job;
             public int Attackpower = 10;
             public int Defense = 5;
             public int Health = 50;
             public int Gold = 1500;
+
 
             public void PlayerStatus()
             {
@@ -150,28 +182,45 @@ namespace TextRPG
                 Console.WriteLine("Gold : " + Gold + "G");
             }
 
+            public void ObtainItem(Item item)
+            {
+                Inventory.AddItem(item);
+            }
+
+            public void 
          }
 
-        static void ShowInventory()
+        class PlayerInventory
         {
-            List<Item> Inventory = new List<Item>();
+            private List<Item> items = new List<Item>();
 
-            Item armor = new Item("무쇠갑옷", 5, 0, 0, "무쇠로 만들어져 튼튼한 갑옷입니다.");
-            Item spear = new Item("스파르타의 창", 0, 0, 7, "스파르타의 전사들이 사용했다는 전설의 창 입니다.");
-            Item sword = new Item("낡은 검", 0, 0, 2, "쉽게 볼 수 있는 낡은 검 입니다.");
-
-            Inventory.Add(armor);
-            Inventory.Add(spear);
-            Inventory.Add(sword);
-
-            Console.WriteLine(" ");
-            Console.WriteLine("인벤토리");
-            Console.WriteLine("보유 중인 아이템을 관리할 수 있습니다.");
-
-            for (int i = 0; i < Inventory.Count; i++)
+            public PlayerInventory()
             {
-                Console.WriteLine($"{i + 1}. {Inventory[i].ShowItemInfo()}");
+                items.Add(new Item("무쇠갑옷", 5, 0, 0, "무쇠로 만들어져 튼튼한 갑옷입니다."));
+                items.Add(new Item("스파르타의 창", 0, 0, 7, "스파르타의 전사들이 사용했다는 전설의 창 입니다."));
+                items.Add(new Item("낡은 검", 0, 0, 2, "쉽게 볼 수 있는 낡은 검 입니다."));
             }
+
+            public void AddItem(Item item)
+            {
+                items.Add(item);
+                Console.WriteLine($"{item.ItemName}을(를) 인벤토리에 추가하였습니다.");
+            }
+
+            public void ShowInventory()
+            {
+                if(items.Count == 0)
+                {
+                    Console.WriteLine(" ");
+                    Console.WriteLine("==인벤토리가 비어있습니다.==");
+                }
+
+                for (int i = 0; i < items.Count; i++)
+                {
+                    Console.WriteLine($"{i + 1}. {items[i].ShowItemInfo()}");
+                }
+            }
+
         }
 
         class Item
