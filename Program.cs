@@ -111,7 +111,35 @@ namespace TextRPG
                 }
                 else if (num == 2)
                 {
-                    ShowInventory();
+                    Inventory();
+                    while (true)
+                    {
+                        Console.WriteLine(" ");
+                        Console.WriteLine("1. 장착 관리 \n2. 나가기");
+                        Console.Write("원하시는 행동을 입력해 주세요. \n>>");
+
+                        bool Inventory = int.TryParse(Console.ReadLine(), out int inventoryNum);
+
+                        if (!Inventory)
+                        {
+                            Console.WriteLine("숫자를 입력해 주세요.");
+                            continue;
+                        }
+                        if (inventoryNum == 1)
+                        {
+                            SelectMenu(player);
+                            break;
+                        }
+                        else if(inventoryNum == 2)
+                        {
+                            SelectMenu(player);
+                            break;
+                        }
+                        else
+                        {
+                            Console.WriteLine("잘못된 입력입니다. 다시 선택해 주세요.");
+                        }
+                    }
                     break;
                 }
                 else if (num == 3)
@@ -152,7 +180,7 @@ namespace TextRPG
 
          }
 
-        static void ShowInventory()
+        static void Inventory()
         {
             List<Item> Inventory = new List<Item>();
 
@@ -172,6 +200,10 @@ namespace TextRPG
             {
                 Console.WriteLine($"{i + 1}. {Inventory[i].ShowItemInfo()}");
             }
+        }
+        class Inventory()
+        {
+
         }
 
         class Item
