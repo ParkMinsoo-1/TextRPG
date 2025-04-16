@@ -56,7 +56,7 @@ namespace TextRPG
             Player player = new Player();
             player.Job = job;
             player.PlayerName = playerName;
-
+            
             Console.WriteLine(" ");
             Console.WriteLine($"환영합니다. 전설의 {player.Job} {player.PlayerName}님.");
 
@@ -132,7 +132,7 @@ namespace TextRPG
         class Player()
         {
             public int Level = 1;
-            public string PlayerName ;
+            public string PlayerName;
             public string Job;
             public int Attackpower = 10;
             public int Defense = 5;
@@ -149,6 +149,7 @@ namespace TextRPG
                 Console.WriteLine("체 력 : " + Health);
                 Console.WriteLine("Gold : " + Gold + "G");
             }
+
          }
 
         static void ShowInventory()
@@ -169,12 +170,13 @@ namespace TextRPG
 
             for (int i = 0; i < Inventory.Count; i++)
             {
-                Console.WriteLine($"{i + 1}. {Inventory[i].ShowItemInfo}");
+                Console.WriteLine($"{i + 1}. {Inventory[i].ShowItemInfo()}");
             }
         }
 
         class Item
         {
+            
             public string ItemName { get; set; }
             public int ItemDefense{ get; set; }
             public int ItemHealth { get; set; }
@@ -189,9 +191,15 @@ namespace TextRPG
                 ItemAttackpower = attackpower;
                 ItemDescription = description;
             }
-            public void ShowItemInfo()
+            public string ShowItemInfo()
             {
-                Console.WriteLine($"이름 : {ItemName}",$"방어력 : {ItemDefense}",$"체력 : {ItemHealth}",$"공격력 : {ItemAttackpower}",$"설명 : {ItemDescription}");
+                string Replacename = ItemName.Replace(" ", string.Empty);
+                int lenght = 15 - Replacename.Length ;
+                string FixedItemName = ItemName.PadRight(lenght);
+
+                return string.Format($"이름 : {FixedItemName}|방어력 : {ItemDefense,3}|체력 : {ItemHealth,3}|공격력 : {ItemAttackpower,3}|설명 : {ItemDescription,-3}");
+
+                
             }
         }
 
