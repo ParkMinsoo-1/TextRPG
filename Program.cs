@@ -1,4 +1,5 @@
-﻿using System.Security.Cryptography.X509Certificates;
+﻿using System.Numerics;
+using System.Security.Cryptography.X509Certificates;
 
 namespace TextRPG
 {
@@ -128,7 +129,6 @@ namespace TextRPG
                         if (inventoryNum == 1)
                         {
                             player.Inventory.EquipItem();
-                            break;
                         }
                         else if(inventoryNum == 2)
                         {
@@ -140,7 +140,8 @@ namespace TextRPG
                             Console.WriteLine("잘못된 입력입니다. 다시 선택해 주세요.");
                         }
                     }
-                    break;
+                    SelectMenu(player);
+
                 }
                 else if (num == 3)
                 {
@@ -172,21 +173,26 @@ namespace TextRPG
             public int Level = 1;
             public string PlayerName ;
             public string Job;
-            public int Attackpower = 10;
-            public int Defense = 5;
-            public int Health = 50;
+            public int BaseAttackpower = 10;
+            public int BaseDefense = 5;
+            public int BaseHealth = 50;
             public int Gold = 1500;
 
 
             public void PlayerStatus()
             {
-                Console.WriteLine("Lv. " + Level);
-                Console.WriteLine("이름 : " + PlayerName);
-                Console.WriteLine("직업 : " + Job);
-                Console.WriteLine("공격력 : " + Attackpower);
-                Console.WriteLine("방어력 : " + Defense);
-                Console.WriteLine("체 력 : " + Health);
-                Console.WriteLine("Gold : " + Gold + "G");
+                int totalAttackpower = BaseAttackpower + Inventory.TotalAttackPower;
+                int totalDefense = BaseDefense + Inventory.TotalDefense;
+                int totalHealth = BaseHealth + Inventory.TotalHealth;
+
+                Console.WriteLine($"{"Lv. ",-7}: {Level}");
+                Console.WriteLine($"{"이름",-5}: {PlayerName}");
+                Console.WriteLine($"{"직업",-5}: {Job}");
+                Console.WriteLine($"{"공격력",-4}: {totalAttackpower} + {Inventory.TotalAttackPower}");
+                Console.WriteLine($"{"방어력",-4}: {totalDefense} + {Inventory.TotalDefense}");
+                Console.WriteLine($"{"체력",-5}: {totalHealth} + {Inventory.TotalHealth}");
+                Console.WriteLine($"{"Gold",-7}: {Gold,3}G");
+
             }
 
             public void ObtainItem(Item item)
@@ -194,15 +200,13 @@ namespace TextRPG
                 Inventory.AddItem(item);
             }
 
-            public void EquipItem()
-            {
-
-            }
          }
 
         class PlayerInventory
         {
             private List<Item> items = new List<Item>();
+            private HashSet<Item> equippedItems = new HashSet<Item>();
+
 
             public PlayerInventory()
             {
@@ -227,18 +231,58 @@ namespace TextRPG
 
                 for (int i = 0; i < items.Count; i++)
                 {
-                    Console.WriteLine($"{i + 1}. {items[i].ShowItemInfo()}");
+                    string equippedMark = equippedItems.Contains(items[i]) ? "[E]" : "[-]";
+                    Console.WriteLine($"{i + 1}.{equippedMark}{items[i].ShowItemInfo()}");
                 }
             }
+            public int TotalAttackPower => equippedItems.Sum(item => item.ItemAttackpower);
+            public int TotalDefense => equippedItems.Sum(item => item.ItemDefense);
+            public int TotalHealth => equippedItems.Sum(item => item.ItemHealth);
 
             public void EquipItem()
             {
-                ShowInventory();
-
-                if(items.Count == 0)
+                while (true)
                 {
-                    return;
+                    
+                    ShowInventory();
+                    Console.WriteLine(" ");
+                    Console.WriteLine("장착/해제할 아이템 번호를 입력하세요");
+                    Console.WriteLine(" ");
+                    Console.WriteLine("0. 나가기");
+                    bool isEquip = int.TryParse(Console.ReadLine(), out int input);
+                    
+                    if (!isEquip || input < 0 || input > items.Count)
+                    {
+                        Console.WriteLine("잘못된 입력입니다.");
+                        continue;
+                    }
+                    if (input == 0)
+                    {
+                        ShowInventory();
+                        Console.WriteLine("장착 관리를 종료합니다.");
+                        break;
+                    }
+                    
+                    int index = input - 1;
+                    Item selectedItem = items[index];
+
+                    if (equippedItems.Contains(selectedItem))
+                    {
+                        equippedItems.Remove(selectedItem);
+                        Console.WriteLine($"{selectedItem.ItemName}을(를) 장착 해제했습니다.");
+                    }
+                    else
+                    {
+                        equippedItems.Add(selectedItem);
+                        Console.WriteLine($"{selectedItem.ItemName}을(를) 장착 했습니다.");
+                    }
+
                 }
+                
+
+                
+
+
             }
 
         }
