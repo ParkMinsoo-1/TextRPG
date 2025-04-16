@@ -86,7 +86,6 @@ namespace TextRPG
 
                     while (true)
                     {
-
                         Console.WriteLine(" ");
                         Console.WriteLine("0. 나가기");
                         Console.Write("원하시는 행동을 입력해 주세요. \n>>");
@@ -151,12 +150,51 @@ namespace TextRPG
                 Console.WriteLine("Gold : " + Gold + "G");
             }
          }
-        
+
         static void ShowInventory()
         {
+            List<Item> Inventory = new List<Item>();
+
+            Item armor = new Item("무쇠갑옷", 5, 0, 0, "무쇠로 만들어져 튼튼한 갑옷입니다.");
+            Item spear = new Item("스파르타의 창", 0, 0, 7, "스파르타의 전사들이 사용했다는 전설의 창 입니다.");
+            Item sword = new Item("낡은 검", 0, 0, 2, "쉽게 볼 수 있는 낡은 검 입니다.");
+
+            Inventory.Add(armor);
+            Inventory.Add(spear);
+            Inventory.Add(sword);
+
+            Console.WriteLine(" ");
             Console.WriteLine("인벤토리");
             Console.WriteLine("보유 중인 아이템을 관리할 수 있습니다.");
+
+            for (int i = 0; i < Inventory.Count; i++)
+            {
+                Console.WriteLine($"{i + 1}. {Inventory[i].ShowItemInfo}");
+            }
         }
+
+        class Item
+        {
+            public string ItemName { get; set; }
+            public int ItemDefense{ get; set; }
+            public int ItemHealth { get; set; }
+            public int ItemAttackpower { get; set; }
+            public string ItemDescription { get; set; }
+
+            public Item(string name, int defense, int health, int attackpower, string description)
+            {
+                ItemName = name;
+                ItemDefense = defense;
+                ItemHealth = health;
+                ItemAttackpower = attackpower;
+                ItemDescription = description;
+            }
+            public void ShowItemInfo()
+            {
+                Console.WriteLine($"이름 : {ItemName}",$"방어력 : {ItemDefense}",$"체력 : {ItemHealth}",$"공격력 : {ItemAttackpower}",$"설명 : {ItemDescription}");
+            }
+        }
+
 
         static void Store()
         {
