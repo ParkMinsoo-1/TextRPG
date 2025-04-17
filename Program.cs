@@ -373,6 +373,7 @@ namespace TextRPG
                 {
                     Console.Clear();
                     Console.WriteLine("======================= 상 점 =======================");
+                    Console.WriteLine(" ");
                     Console.WriteLine("다양한 물건을 구매/판매 할 수 있습니다.");
                     Console.WriteLine(" ");
                     Console.WriteLine("1. 아이템 구매 ");
