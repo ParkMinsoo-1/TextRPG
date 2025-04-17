@@ -20,6 +20,7 @@ namespace TextRPG
             {
                 Console.Clear();
                 Console.WriteLine("당신의 직업은 무엇입니까?");
+                Console.WriteLine(" ");
                 Console.WriteLine("1. 전사 \n2. 도적 \n3. 궁수 \n4. 마법사 \n");
                 bool isNum = int.TryParse(Console.ReadLine(), out int num);
 
