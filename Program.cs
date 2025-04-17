@@ -227,7 +227,7 @@ namespace TextRPG
                 for (int i = 0; i < items.Count; i++)
                 {
                     string equippedMark = equippedItems.Contains(items[i]) ? "[E]" : "[-]";
-                    Console.WriteLine($"{equippedMark}{items[i].ShowItemInfo()}");
+                    Console.WriteLine ($"{equippedMark}{items[i].ShowItemInfo()}");                  
                 }
             }
             public int TotalAttackPower => equippedItems.Sum(item => item.ItemAttackpower);
