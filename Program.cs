@@ -408,6 +408,9 @@ namespace TextRPG
             }
             public void BuyItem(Player player)
             {
+                List<Item> items = new List<Item>();
+                int errorcode = 0;
+
                 while (true)
                 {
                     Console.WriteLine("============== 구매 가능한 아이템 목록 ==============");
@@ -419,6 +422,19 @@ namespace TextRPG
                     Console.WriteLine(" ");
                     Console.WriteLine("======================================================");
                     Console.WriteLine(" ");
+                    for(int i = 0;i < items.Count; i++)
+                    {
+                        Console.WriteLine($"{items[i].ItemName}을(를) 구매하였습니다.");
+                    }
+                    if (errorcode == 1)
+                    {
+                        Console.WriteLine("잘못된 입력입니다.");
+                    }
+                    else if (errorcode == 2)
+                    {
+                        Console.WriteLine("골드가 부족합니다.");
+                    }
+
                     Console.WriteLine("구매를 원하는 아이템의 번호를 입력하세요.");
                     Console.WriteLine(" ");
                     Console.WriteLine("0. 나가기 ");
@@ -429,7 +445,8 @@ namespace TextRPG
 
                     if (!isNum || input < 0 || input > storeItem.Count)
                     {
-                        Console.WriteLine("잘못된 입력입니다.");
+                        errorcode = 1;
+                        Console.Clear();
                         continue;
                     }
                     if (input == 0)
@@ -441,16 +458,17 @@ namespace TextRPG
 
                     if (player.Gold >= selectedItem.ItemPrice)
                     {
+                        errorcode = 0;
                         player.Gold -= selectedItem.ItemPrice;
-                        Console.WriteLine($"{selectedItem.ItemName}을(를) 구매하였습니다.");
+                        items.Add(selectedItem);
                         player.ObtainItem(selectedItem);
                     }
                     else
                     {
-                        Console.WriteLine("골드가 부족합니다.");
+                        errorcode = 2;
                     }
+                    Console.Clear();
                 }
-
             }
             public void SellItem(Player player)
             {
@@ -482,7 +500,6 @@ namespace TextRPG
                         {
                             return;
                         }
-                        
                     }
 
                     for (int i = 0; i < playerItems.Count; i++)
