@@ -299,14 +299,16 @@ namespace TextRPG
             public string ShowItemInfo(bool showPrice = false)
             {
                 string Replacename = ItemName.Replace(" ", string.Empty);
-                int lenght = 15 - Replacename.Length ;
+                int lenght = 15 - Replacename.Length;
                 string FixedItemName = ItemName.PadRight(lenght);
 
-                string itemInfo = $"이름 : {FixedItemName}|방어력 : {ItemDefense,3}|체력 : {ItemHealth,3}|공격력 : {ItemAttackpower,3}|설명 : {ItemDescription,-3}";
-                
+                string itemInfo = $"|이름 : {FixedItemName}|방어력 : {ItemDefense,3}|체력 : {ItemHealth,3}|공격력 : {ItemAttackpower,3}|설명 : {ItemDescription,-3}";
+                string itemInfoPrice = $"|가격 :{ItemPrice,6}G {itemInfo}";
+
+
                 if (showPrice)
                 {
-                    itemInfo += $"|가격 : {ItemPrice,3}G"; 
+                    return itemInfoPrice;
                 }
 
                 return itemInfo;
@@ -328,7 +330,49 @@ namespace TextRPG
 
             public void EnterStore(Player player)
             {
-                Console.WriteLine("구매 가능한 아이템 목록입니다.");
+                for(int i = 0; i < storeItem.Count; i++)
+                {
+                    Console.WriteLine($"-{storeItem[i].ShowItemInfo()}");
+                }
+
+                Console.WriteLine(" ");
+                Console.WriteLine("다양한 물건을 구매/판매 할 수 있습니다.");
+                Console.WriteLine(" ");
+                Console.WriteLine("1. 아이템 구매 ");
+                Console.WriteLine("2. 아이템 판매 ");
+                Console.WriteLine("0. 나가기 ");
+                Console.WriteLine(" ");
+                Console.WriteLine("원하시는 행동을 입력해 주세요. ");
+
+                bool isNum = int.TryParse(Console.ReadLine(), out int input);
+
+                if (!isNum) return;
+                switch (input)
+                {
+                    case 1:
+                        BuyItem(player);
+                        break;
+                    case 2:
+                        SellItem(player);
+                        break;
+                    case 0:
+                        return;
+                    default:
+                        Console.WriteLine("잘못된 입력입니다.");
+                        break;
+                }
+            }
+            public void BuyItem(Player player)
+            {
+                for(int i = 0;i < storeItem.Count; i++)
+                {
+                    Console.WriteLine($"{i+1}.{storeItem[i].ShowItemInfo(true)}");
+                }
+                //player.Gold >= selectedItem.ItemPrice
+            }
+            public void SellItem(Player player)
+            {
+
             }
 
         }
