@@ -455,12 +455,29 @@ namespace TextRPG
 
                     Console.WriteLine("============== 판매 가능한 아이템 목록 ==============");
                     Console.WriteLine(" ");
+                    
                     if (playerItems.Count == 0)
                     {
                         Console.WriteLine("판매할 아이템이 없습니다.");
                         Console.WriteLine(" ");
                         Console.WriteLine("=====================================================");
-                        break;
+                        Console.WriteLine(" ");
+                        Console.WriteLine("0. 나가기");
+                        Console.WriteLine(" ");
+
+                        Console.Write(">> ");
+                        bool isExit = int.TryParse(Console.ReadLine(), out int exitNum);
+                        if(!isExit || exitNum < 0)
+                        {
+                            Console.WriteLine("잘못된 입력입니다.");
+                            continue;
+                        }
+
+                        if(exitNum == 0)
+                        {
+                            return;
+                        }
+                        
                     }
 
                     for (int i = 0; i < playerItems.Count; i++)
@@ -470,10 +487,13 @@ namespace TextRPG
 
                     Console.WriteLine(" ");
                     Console.WriteLine("=====================================================");
+                    Console.WriteLine(" ");
                     Console.WriteLine("판매를 원하는 아이템의 번호를 입력하세요. ");
+                    Console.WriteLine(" ");
                     Console.WriteLine("0. 나가기 ");
                     Console.WriteLine(" ");
 
+                    Console.WriteLine(">> ");
                     bool isNum = int.TryParse(Console.ReadLine(), out int input);
                     if (!isNum || input < 0 || input > playerItems.Count)
                     {
