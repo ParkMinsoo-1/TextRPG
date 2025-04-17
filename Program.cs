@@ -18,8 +18,7 @@ namespace TextRPG
             
             while (true)
             {
-                
-                Console.WriteLine("");
+                Console.Clear();
                 Console.WriteLine("당신의 직업은 무엇입니까?");
                 Console.WriteLine("1. 전사 \n2. 도적 \n3. 궁수 \n4. 마법사 \n");
                 bool isNum = int.TryParse(Console.ReadLine(), out int num);
@@ -55,8 +54,8 @@ namespace TextRPG
                 }
             }
             Player player = new Player(playerName, job);
-            
-            Console.WriteLine(" ");
+
+            Console.Clear();
             Console.WriteLine($"환영합니다. 전설의 {job} {playerName}님.");
 
             SelectMenu(player);
@@ -67,6 +66,7 @@ namespace TextRPG
             
             while (true)
             {
+
                 Console.WriteLine("이곳에서 던전으로 들어가기 전 활동을 할 수 있습니다. \n \n1. 상태 보기 \n2. 인벤토리 \n3. 상점 \n");
                 Console.Write("원하시는 행동을 입력해주세요. \n>>");
                 bool isNum = int.TryParse(Console.ReadLine(), out int num);
@@ -78,7 +78,7 @@ namespace TextRPG
                 }
                 if (num == 1)
                 {
-                    Console.WriteLine(" ");
+                    Console.Clear();
                     Console.WriteLine("==========캐릭터의 정보가 표시됩니다.==========");
                     Console.WriteLine(" ");
                     player.PlayerStatus();
@@ -101,6 +101,7 @@ namespace TextRPG
                         }
                         if (exitNum == 0)
                         {
+                            Console.Clear();
                             SelectMenu(player);
                             break;
                         }
@@ -112,6 +113,7 @@ namespace TextRPG
                 }
                 else if (num == 2)
                 {
+                    Console.Clear();
                     player.Inventory.ShowInventory();
 
                     while (true)
@@ -130,10 +132,12 @@ namespace TextRPG
                         }
                         if (inventoryNum == 1)
                         {
+                            Console.Clear();
                             player.Inventory.EquipItem();
                         }
                         else if(inventoryNum == 2)
                         {
+                            Console.Clear();
                             SelectMenu(player);
                             break;
                         }
@@ -145,6 +149,7 @@ namespace TextRPG
                 }
                 else if (num == 3)
                 {
+                    Console.Clear();
                     Store store = new Store();
                     store.EnterStore(player);
                 }
@@ -233,7 +238,10 @@ namespace TextRPG
                 if (items.Count == 0)
                 {
                     Console.WriteLine(" ");
-                    Console.WriteLine("========== 인벤토리가 비어있습니다 ==========");
+                    Console.WriteLine("==================== 인벤토리가 비어있습니다 ===================");
+                    Console.WriteLine(" ");
+                    Console.WriteLine("================================================================");
+                    Console.WriteLine(" ");
                     return;
                 }
 
@@ -264,6 +272,7 @@ namespace TextRPG
             {
                 while (true)
                 {
+                    Console.Clear();
                     ShowInventory(true);
                     Console.WriteLine(" ");
                     Console.WriteLine("장착/해제할 아이템 번호를 입력하세요");
@@ -279,8 +288,11 @@ namespace TextRPG
                     }
                     if (input == 0)
                     {
+                        Console.Clear();
                         ShowInventory();
+                        Console.WriteLine(" ");
                         Console.WriteLine("장착 관리를 종료합니다.");
+                        Console.WriteLine(" ");
                         break;
                     }
                     
@@ -358,7 +370,7 @@ namespace TextRPG
             {
                 while (true)
                 {
-                    Console.WriteLine(" ");
+                    Console.Clear();
                     Console.WriteLine("======================= 상 점 =======================");
                     Console.WriteLine("다양한 물건을 구매/판매 할 수 있습니다.");
                     Console.WriteLine(" ");
@@ -367,6 +379,7 @@ namespace TextRPG
                     Console.WriteLine("0. 나가기 ");
                     Console.WriteLine(" ");
                     Console.WriteLine("=====================================================");
+                    Console.WriteLine(" ");
                     Console.Write("원하시는 행동을 입력해 주세요. \n>>");
                     
                     bool isNum = int.TryParse(Console.ReadLine(), out int input);
@@ -400,17 +413,24 @@ namespace TextRPG
                     }
                     Console.WriteLine(" ");
                     Console.WriteLine("======================================================");
+                    Console.WriteLine(" ");
                     Console.WriteLine("구매를 원하는 아이템의 번호를 입력하세요.");
+                    Console.WriteLine(" ");
                     Console.WriteLine("0. 나가기 ");
                     Console.WriteLine(" ");
-                    
+
+                    Console.Write(">>");
                     bool isNum = int.TryParse(Console.ReadLine(), out int input);
+
                     if (!isNum || input < 0 || input > storeItem.Count)
                     {
                         Console.WriteLine("잘못된 입력입니다.");
                         continue;
                     }
-                    if (input == 0) return;
+                    if (input == 0)
+                    {
+                        return;
+                    }
 
                     Item selectedItem = storeItem[input - 1];
 
@@ -423,7 +443,6 @@ namespace TextRPG
                     else
                     {
                         Console.WriteLine("골드가 부족합니다.");
-
                     }
                 }
 
@@ -436,12 +455,29 @@ namespace TextRPG
 
                     Console.WriteLine("============== 판매 가능한 아이템 목록 ==============");
                     Console.WriteLine(" ");
+                    
                     if (playerItems.Count == 0)
                     {
                         Console.WriteLine("판매할 아이템이 없습니다.");
                         Console.WriteLine(" ");
                         Console.WriteLine("=====================================================");
-                        return;
+                        Console.WriteLine(" ");
+                        Console.WriteLine("0. 나가기");
+                        Console.WriteLine(" ");
+
+                        Console.Write(">> ");
+                        bool isExit = int.TryParse(Console.ReadLine(), out int exitNum);
+                        if(!isExit || exitNum < 0)
+                        {
+                            Console.WriteLine("잘못된 입력입니다.");
+                            continue;
+                        }
+
+                        if(exitNum == 0)
+                        {
+                            return;
+                        }
+                        
                     }
 
                     for (int i = 0; i < playerItems.Count; i++)
@@ -451,10 +487,13 @@ namespace TextRPG
 
                     Console.WriteLine(" ");
                     Console.WriteLine("=====================================================");
+                    Console.WriteLine(" ");
                     Console.WriteLine("판매를 원하는 아이템의 번호를 입력하세요. ");
+                    Console.WriteLine(" ");
                     Console.WriteLine("0. 나가기 ");
                     Console.WriteLine(" ");
 
+                    Console.WriteLine(">> ");
                     bool isNum = int.TryParse(Console.ReadLine(), out int input);
                     if (!isNum || input < 0 || input > playerItems.Count)
                     {
@@ -469,7 +508,6 @@ namespace TextRPG
                     player.Gold += sellPrice;
                     Console.WriteLine($"{selectedItem.ItemName}을(를) {sellPrice}G에 판매하였습니다.");
                 }
-
             }
 
         }
