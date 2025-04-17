@@ -120,7 +120,7 @@ namespace TextRPG
                     while (true)
                     {
                         Console.WriteLine(" ");
-                        Console.WriteLine("1. 장착 관리 \n2. 나가기");
+                        Console.WriteLine("1. 장착 관리 \n0. 나가기");
                         Console.WriteLine(" ");
                         Console.Write("원하시는 행동을 입력해 주세요. \n>>");
 
@@ -136,7 +136,7 @@ namespace TextRPG
                             Console.Clear();
                             player.Inventory.EquipItem();
                         }
-                        else if(inventoryNum == 2)
+                        else if(inventoryNum == 0)
                         {
                             Console.Clear();
                             SelectMenu(player);
@@ -389,12 +389,15 @@ namespace TextRPG
                     switch (input)
                     {
                         case 1:
+                            Console.Clear();
                             BuyItem(player);
                             break;
                         case 2:
+                            Console.Clear();
                             SellItem(player);
                             break;
                         case 0:
+                            Console.Clear();
                             return;
                         default:
                             Console.WriteLine("잘못된 입력입니다.");
