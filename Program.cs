@@ -142,7 +142,8 @@ namespace TextRPG
                 }
                 else if (num == 3)
                 {
-                    Store();
+                    Store store = new Store();
+                    store.EnterStore(player);
                     break;
                 }
                 else
@@ -227,8 +228,10 @@ namespace TextRPG
                 for (int i = 0; i < items.Count; i++)
                 {
                     string equippedMark = equippedItems.Contains(items[i]) ? "[E]" : "[-]";
-                    Console.WriteLine ($"{equippedMark}{items[i].ShowItemInfo()}");                  
+                    Console.WriteLine ($"{equippedMark}{items[i].ShowItemInfo()}");
                 }
+
+
             }
             public int TotalAttackPower => equippedItems.Sum(item => item.ItemAttackpower);
             public int TotalDefense => equippedItems.Sum(item => item.ItemDefense);
@@ -310,11 +313,25 @@ namespace TextRPG
             
             }
         }
-
-
-        static void Store()
+        class Store
         {
-            Console.WriteLine("상점보기 입니다.");
+            private List<Item> storeItem = new List<Item>();
+            public Store()
+            {
+                storeItem.Add(new Item("수련자 갑옷", 5, 0, 0, "수련에 도움을 주는 갑옷입니다.", 500));
+                storeItem.Add(new Item("무쇠 갑옷", 9, 0, 0, "무쇠로 만들어져 튼튼한 갑옷입니다.", 500));
+                storeItem.Add(new Item("스파르타의 갑옷", 15, 0, 0, "스파르타의 전사들이 사용했다는 전설의 갑옷입니다.", 1000));
+                storeItem.Add(new Item("낡은 검", 0, 0, 2, "쉽게 볼 수 있는 낡은 검입니다.", 500));
+                storeItem.Add(new Item("청동 도끼", 0, 0, 5, "어디선가 사용되었던 느낌이드는 도끼입니다.", 500));
+                storeItem.Add(new Item("스파르타의 창", 0, 0, 7, "스파르타의 전사들이 사용했다는 전설의 창입니다.", 1000));
+            }
+
+            public void EnterStore(Player player)
+            {
+                Console.WriteLine("구매 가능한 아이템 목록입니다.");
+            }
+
         }
+
     }
 }
