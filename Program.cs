@@ -205,9 +205,9 @@ namespace TextRPG
 
             public PlayerInventory()
             {
-                items.Add(new Item("무쇠갑옷", 5, 0, 0, "무쇠로 만들어져 튼튼한 갑옷입니다."));
-                items.Add(new Item("스파르타의 창", 0, 0, 7, "스파르타의 전사들이 사용했다는 전설의 창 입니다."));
-                items.Add(new Item("낡은 검", 0, 0, 2, "쉽게 볼 수 있는 낡은 검 입니다."));
+                items.Add(new Item("무쇠갑옷", 5, 0, 0, "무쇠로 만들어져 튼튼한 갑옷입니다.", 500));
+                items.Add(new Item("스파르타의 창", 0, 0, 7, "스파르타의 전사들이 사용했다는 전설의 창 입니다.", 500));
+                items.Add(new Item("낡은 검", 0, 0, 2, "쉽게 볼 수 있는 낡은 검 입니다.", 100));
             }
 
             public void AddItem(Item item)
@@ -278,26 +278,36 @@ namespace TextRPG
         class Item
         {
             public string ItemName { get; set; }
-            public int ItemDefense{ get; set; }
+            public int ItemDefense { get; set; }
             public int ItemHealth { get; set; }
             public int ItemAttackpower { get; set; }
             public string ItemDescription { get; set; }
+            public int ItemPrice { get; set; }
 
-            public Item(string name, int defense, int health, int attackpower, string description)
+            public Item(string name, int defense, int health, int attackpower, string description, int itemPrice)
             {
                 ItemName = name;
                 ItemDefense = defense;
                 ItemHealth = health;
                 ItemAttackpower = attackpower;
                 ItemDescription = description;
+                ItemPrice = itemPrice;
             }
-            public string ShowItemInfo()
+            public string ShowItemInfo(bool showPrice = false)
             {
                 string Replacename = ItemName.Replace(" ", string.Empty);
                 int lenght = 15 - Replacename.Length ;
                 string FixedItemName = ItemName.PadRight(lenght);
 
-                return string.Format($"이름 : {FixedItemName}|방어력 : {ItemDefense,3}|체력 : {ItemHealth,3}|공격력 : {ItemAttackpower,3}|설명 : {ItemDescription,-3}");
+                string itemInfo = $"이름 : {FixedItemName}|방어력 : {ItemDefense,3}|체력 : {ItemHealth,3}|공격력 : {ItemAttackpower,3}|설명 : {ItemDescription,-3}";
+                
+                if (showPrice)
+                {
+                    itemInfo += $"|가격 : {ItemPrice,3}G"; 
+                }
+
+                return itemInfo;
+            
             }
         }
 
