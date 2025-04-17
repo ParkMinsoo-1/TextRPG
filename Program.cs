@@ -88,6 +88,7 @@ namespace TextRPG
                     {
                         Console.WriteLine(" ");
                         Console.WriteLine("0. 나가기");
+                        Console.WriteLine(" ");
                         Console.Write("원하시는 행동을 입력해 주세요. \n>>");
 
                         bool exit = int.TryParse(Console.ReadLine(), out int exitNum);
@@ -116,6 +117,7 @@ namespace TextRPG
                     {
                         Console.WriteLine(" ");
                         Console.WriteLine("1. 장착 관리 \n2. 나가기");
+                        Console.WriteLine(" ");
                         Console.Write("원하시는 행동을 입력해 주세요. \n>>");
 
                         bool Inventory = int.TryParse(Console.ReadLine(), out int inventoryNum);
@@ -201,7 +203,14 @@ namespace TextRPG
         {
             private List<Item> items = new List<Item>();
             private HashSet<Item> equippedItems = new HashSet<Item>();
-
+            public List<Item> GetItems()
+            {
+                return items;
+            }
+            public void RemoveItem(Item item)
+            {
+                items.Remove(item);
+            }
 
             public PlayerInventory()
             {
@@ -256,6 +265,7 @@ namespace TextRPG
                     Console.WriteLine("장착/해제할 아이템 번호를 입력하세요");
                     Console.WriteLine(" ");
                     Console.WriteLine("0. 나가기");
+                    Console.WriteLine(" ");
                     bool isEquip = int.TryParse(Console.ReadLine(), out int input);
                     
                     if (!isEquip || input < 0 || input > items.Count)
@@ -265,7 +275,7 @@ namespace TextRPG
                     }
                     if (input == 0)
                     {
-                        ShowInventory(false);
+                        ShowInventory();
                         Console.WriteLine("장착 관리를 종료합니다.");
                         break;
                     }
@@ -285,6 +295,10 @@ namespace TextRPG
                     }
 
                 }
+            }
+            public bool IsEquipped(Item item)
+            {
+                return equippedItems.Contains(item);
             }
         }
         class Item
@@ -308,10 +322,10 @@ namespace TextRPG
             public string ShowItemInfo(bool showPrice = false)
             {
                 string Replacename = ItemName.Replace(" ", string.Empty);
-                int lenght = 15 - Replacename.Length;
+                int lenght = 16 - Replacename.Length;
                 string FixedItemName = ItemName.PadRight(lenght);
 
-                string itemInfo = $"|이름 : {FixedItemName}|방어력 : {ItemDefense,3}|체력 : {ItemHealth,3}|공격력 : {ItemAttackpower,3}|설명 : {ItemDescription,-3}";
+                string itemInfo = $"|이름 : {FixedItemName}|방어력 : {ItemDefense,2}|체력 : {ItemHealth,2}|공격력 : {ItemAttackpower,2}|설명 : {ItemDescription,-3}";
                 string itemInfoPrice = $"|가격 :{ItemPrice,6}G {itemInfo}";
 
                 if (showPrice)
@@ -340,13 +354,6 @@ namespace TextRPG
             {
                 while (true)
                 {
-
-                
-                    for(int i = 0; i < storeItem.Count; i++)
-                    {
-                        Console.WriteLine($"-{storeItem[i].ShowItemInfo()}");
-                    }
-
                     Console.WriteLine(" ");
                     Console.WriteLine("다양한 물건을 구매/판매 할 수 있습니다.");
                     Console.WriteLine(" ");
@@ -354,7 +361,7 @@ namespace TextRPG
                     Console.WriteLine("2. 아이템 판매 ");
                     Console.WriteLine("0. 나가기 ");
                     Console.WriteLine(" ");
-                    Console.WriteLine("원하시는 행동을 입력해 주세요. ");
+                    Console.Write("원하시는 행동을 입력해 주세요. \n >> ");
 
                     bool isNum = int.TryParse(Console.ReadLine(), out int input);
 
@@ -379,6 +386,8 @@ namespace TextRPG
             {
                 while (true)
                 {
+                    Console.WriteLine("========== 구매 가능한 아이템 목록 ==========");
+                    Console.WriteLine(" ");
                     for (int i = 0; i < storeItem.Count; i++)
                     {
                         Console.WriteLine($"{i + 1}.{storeItem[i].ShowItemInfo(true)}");
@@ -387,8 +396,8 @@ namespace TextRPG
                     Console.WriteLine("구매를 원하는 아이템의 번호를 입력하세요.");
                     Console.WriteLine("0. 나가기 ");
                     Console.WriteLine(" ");
+                    
                     bool isNum = int.TryParse(Console.ReadLine(), out int input);
-
                     if (!isNum || input < 0 || input > storeItem.Count)
                     {
                         Console.WriteLine("잘못된 입력입니다.");
@@ -414,6 +423,39 @@ namespace TextRPG
             }
             public void SellItem(Player player)
             {
+                List<Item> playerItems = player.Inventory.GetItems().Where(item => !player.Inventory.IsEquipped(item)).ToList();
+
+                Console.WriteLine("========== 판매 가능한 아이템 목록 ==========");
+                Console.WriteLine(" ");
+                if (playerItems.Count == 0)
+                {
+                    Console.WriteLine("판매할 아이템이 없습니다.");
+                    return;
+                }
+
+                for (int i = 0; i < playerItems.Count; i++)
+                {
+                    Console.WriteLine($"{i + 1}.|판매가격 : {playerItems[i].ItemPrice*0.85,3}G {playerItems[i].ShowItemInfo()}");
+                }
+
+                Console.WriteLine(" ");
+                Console.WriteLine("판매를 원하는 아이템의 번호를 입력하세요. ");
+                Console.WriteLine("0. 나가기 ");
+                Console.WriteLine(" ");
+                
+                bool isNum = int.TryParse(Console.ReadLine(), out int input);
+                if(!isNum || input < 0 || input > playerItems.Count)
+                {
+                    Console.WriteLine("잘못된 입력입니다.");
+                    return;
+                }
+                if (input == 0) return;
+
+                Item selectedItem = playerItems[input - 1];
+                player.Inventory.RemoveItem(selectedItem);
+                int sellPrice = (int)(selectedItem.ItemPrice * 0.85);
+                player.Gold += sellPrice;
+                Console.WriteLine($"{selectedItem.ItemName}을(를) {sellPrice}G에 판매하였습니다.");
 
             }
 
