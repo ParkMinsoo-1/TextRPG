@@ -472,6 +472,9 @@ namespace TextRPG
             }
             public void SellItem(Player player)
             {
+                List<Item> sellItem = new List<Item>();
+                int errorcode = 0;
+
                 while (true)
                 {
                     List<Item> playerItems = player.Inventory.GetItems().Where(item => !player.Inventory.IsEquipped(item)).ToList();
@@ -510,25 +513,39 @@ namespace TextRPG
                     Console.WriteLine(" ");
                     Console.WriteLine("=====================================================");
                     Console.WriteLine(" ");
+                    for (int i = 0; i < sellItem.Count; i++)
+                    {
+                        Console.WriteLine($"{sellItem[i].ItemName}을(를) 판매하였습니다.");
+                    }
+                    if(errorcode == 1)
+                    {
+                        Console.WriteLine("잘못된 입력입니다.");
+                    }
                     Console.WriteLine("판매를 원하는 아이템의 번호를 입력하세요. ");
                     Console.WriteLine(" ");
                     Console.WriteLine("0. 나가기 ");
                     Console.WriteLine(" ");
 
-                    Console.WriteLine(">> ");
+                    Console.Write(">> ");
                     bool isNum = int.TryParse(Console.ReadLine(), out int input);
                     if (!isNum || input < 0 || input > playerItems.Count)
                     {
-                        Console.WriteLine("잘못된 입력입니다.");
+                        errorcode = 1;
+                        Console.Clear();
                         continue;
                     }
-                    if (input == 0) return;
-
+                    if (input == 0)
+                    {
+                        return;
+                    }
+                    
+                    errorcode = 0;
                     Item selectedItem = playerItems[input - 1];
                     player.Inventory.RemoveItem(selectedItem);
                     int sellPrice = (int)(selectedItem.ItemPrice * 0.85);
                     player.Gold += sellPrice;
-                    Console.WriteLine($"{selectedItem.ItemName}을(를) {sellPrice}G에 판매하였습니다.");
+                    sellItem.Add(selectedItem);
+                    Console.Clear();
                 }
             }
 
